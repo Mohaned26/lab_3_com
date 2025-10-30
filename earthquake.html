@@ -94,9 +94,9 @@
         async function geojsonFetch() {
 
             let response, earthquakes, japan, table;
-            response = await fetch('earthquakes.geojson');
+            response = await fetch('img/earthquakes.geojson');
             earthquakes = await response.json();
-            response = await fetch('japan.json');
+            response = await fetch('img/japan.json');
             japan = await response.json();
 
             table = document.getElementsByTagName("table")[0];
