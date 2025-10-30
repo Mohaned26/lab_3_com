@@ -1,0 +1,9 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {"type": "Feature","properties": {"name": "Pike Place Chowder"},"geometry": {"type": "Point","coordinates": [-122.3415, 47.6097]}},
+    {"type": "Feature","properties": {"name": "Canlis"},"geometry": {"type": "Point","coordinates": [-122.3473, 47.6469]}},
+    {"type": "Feature","properties": {"name": "Toulouse Petit"},"geometry": {"type": "Point","coordinates": [-122.3565, 47.6378]}},
+    {"type": "Feature","properties": {"name": "The Pink Door"},"geometry": {"type": "Point","coordinates": [-122.3425, 47.6101]}}
+  ]
+}

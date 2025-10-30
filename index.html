@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <title>Seattle Food & Crime Map</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <style>
+    body { margin:0; padding:0; font-family:sans-serif; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+mapboxgl.accessToken =
+'pk.eyJ1IjoibW9oYW5lZDI2IiwiYSI6ImNtaDlxZHh0YTByMWMyanB1Z3d0ZDBkazYifQ.TzXPpKsEcgZRWo8Tcshfig';
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v12',
+  center: [-122.335167, 47.608013],
+  zoom: 11
+});
+
+// --- Inline GeoJSON data ---
+const restaurants = {
+  "type":"FeatureCollection",
+  "features":[
+    {"type":"Feature","properties":{"name":"Pike Place Chowder"},"geometry":{"type":"Point","coordinates":[-122.3415,47.6097]}},
+    {"type":"Feature","properties":{"name":"Canlis"},"geometry":{"type":"Point","coordinates":[-122.3473,47.6469]}},
+    {"type":"Feature","properties":{"name":"Toulouse Petit"},"geometry":{"type":"Point","coordinates":[-122.3565,47.6378]}},
+    {"type":"Feature","properties":{"name":"The Pink Door"},"geometry":{"type":"Point","coordinates":[-122.3425,47.6101]}}
+  ]
+};
+
+const crimes = {
+  "type":"FeatureCollection",
+  "features":[
+    {"type":"Feature","properties":{"incident":"Car Theft"},"geometry":{"type":"Point","coordinates":[-122.3301,47.608]}},
+    {"type":"Feature","properties":{"incident":"Burglary"},"geometry":{"type":"Point","coordinates":[-122.315,47.6205]}},
+    {"type":"Feature","properties":{"incident":"Vandalism"},"geometry":{"type":"Point","coordinates":[-122.355,47.6062]}},
+    {"type":"Feature","properties":{"incident":"Assault"},"geometry":{"type":"Point","coordinates":[-122.332,47.6149]}}
+  ]
+};
+
+// --- Add sources & layers ---
+map.on('load', () => {
+  map.addSource('restaurants', { type: 'geojson', data: restaurants });
+  map.addLayer({
+    id: 'restaurant-layer',
+    type: 'circle',
+    source: 'restaurants',
+    paint: {
+      'circle-radius': 8,
+      'circle-color': '#ff7b00',
+      'circle-stroke-color': '#fff',
+      'circle-stroke-width': 2
+    }
+  });
+
+  map.addSource('crimes', { type: 'geojson', data: crimes });
+  map.addLayer({
+    id: 'crime-layer',
+    type: 'circle',
+    source: 'crimes',
+    paint: {
+      'circle-radius': 8,
+      'circle-color': '#e63946',
+      'circle-stroke-color': '#fff',
+      'circle-stroke-width': 2
+    }
+  });
+
+  // --- Interactive popups ---
+  map.on('click', 'restaurant-layer', (e) => {
+    const name = e.features[0].properties.name;
+    new mapboxgl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(`<strong>Restaurant:</strong> ${name}`)
+      .addTo(map);
+  });
+
+  map.on('click', 'crime-layer', (e) => {
+    const incident = e.features[0].properties.incident;
+    new mapboxgl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(`<strong>Crime:</strong> ${incident}`)
+      .addTo(map);
+  });
+
+  map.on('mouseenter', 'restaurant-layer', () => map.getCanvas().style.cursor = 'pointer');
+  map.on('mouseleave', 'restaurant-layer', () => map.getCanvas().style.cursor = '');
+  map.on('mouseenter', 'crime-layer', () => map.getCanvas().style.cursor = 'pointer');
+  map.on('mouseleave', 'crime-layer', () => map.getCanvas().style.cursor = '');
+});
+</script>
+</body>
+</html>
