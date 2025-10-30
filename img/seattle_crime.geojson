@@ -1,9 +1,0 @@
-{
-  "type": "FeatureCollection",
-  "features": [
-    {"type": "Feature","properties": {"incident": "Car Theft"},"geometry": {"type": "Point","coordinates": [-122.3301, 47.608]}},
-    {"type": "Feature","properties": {"incident": "Burglary"},"geometry": {"type": "Point","coordinates": [-122.315, 47.6205]}},
-    {"type": "Feature","properties": {"incident": "Vandalism"},"geometry": {"type": "Point","coordinates": [-122.355, 47.6062]}},
-    {"type": "Feature","properties": {"incident": "Assault"},"geometry": {"type": "Point","coordinates": [-122.332, 47.6149]}}
-  ]
-}
